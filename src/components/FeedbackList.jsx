@@ -3,7 +3,7 @@ import { useContext } from 'react'
 // context
 import FeedbackContext from '../context/FeedbackContext'
 // framer-motion
-import { motion, AnimatePresence, animate } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 // components
 import FeedbackItem from './FeedbackItem'
 
