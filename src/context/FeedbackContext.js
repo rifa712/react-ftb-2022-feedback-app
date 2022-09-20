@@ -1,6 +1,4 @@
 import { createContext, useEffect, useRef, useState } from 'react'
-// util
-import { v4 as uuidv4 } from 'uuid'
 
 const FeedbackContext = createContext()
 
@@ -37,9 +35,18 @@ export const FeedbackProvider = ({ children }) => {
   }
 
   // Add feedback
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4()
-    setFeedback([newFeedback, ...feedback])
+  const addFeedback = async (newFeedback) => {
+    const res = await fetch(`/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newFeedback),
+    })
+
+    const data = await res.json()
+
+    setFeedback([data, ...feedback])
   }
 
   // Edit feedback
@@ -51,16 +58,25 @@ export const FeedbackProvider = ({ children }) => {
   }
 
   // Update feedback
-  const updateFeedback = (id, updItem) => {
+  const updateFeedback = async (id, updItem) => {
+    const res = await fetch(`/feedback/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updItem),
+    })
+
+    const data = await res.json()
+
     setFeedback(
-      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+      feedback.map((item) => (item.id === id ? { ...item, ...data } : item))
     )
     setFeedbackEdit({ item: {}, edit: false })
   }
 
   // Deleting feedback
-  const deleteFeedback = (id) => {
+  const deleteFeedback = async (id) => {
     if (window.confirm('Are you sure want to delete this feedback ?')) {
+      await fetch(`/feedback/${id}`, { method: 'DELETE' })
       setFeedback(feedback.filter((item) => item.id !== id))
     }
   }
