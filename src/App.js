@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-// static data
-import FeedbackData from './data/FeedbackData'
 // context
 import { FeedbackProvider } from './context/FeedbackContext'
 // components
@@ -14,8 +12,6 @@ import AboutIconLink from './components/AboutIconLink'
 import About from './pages/About'
 
 const App = () => {
-  const [feedback, setFeedback] = useState(FeedbackData)
-
   return (
     <FeedbackProvider>
       <BrowserRouter>
